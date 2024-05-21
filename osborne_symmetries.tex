@@ -147,17 +147,24 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 \renewcommand*{\mitsansomega}{\char"E071}
 \renewcommand*{\mitsansvarepsilon}{\char"E072}
 \setmathfont[range={\mathfrak,\mathbffrak}]{NewCMMath-Regular.otf}
-\DeclareMathAlphabet\cmmathcal{OMS}{cmsy}{m}{n}
-\renewcommand{\mathcal}{\cmmathcal}
+% \DeclareMathAlphabet\cmmathcal{OMS}{cmsy}{m}{n}
+% \renewcommand{\mathcal}{\cmmathcal}
 
 \usepackage[style=british]{csquotes}
 
 \usepackage{amsthm}
 \theoremstyle{definition}
-\newtheorem{thm}{Theorem}
-\newtheorem{defn}{Definition}
-\newtheorem{exmp}{Example}
-\newtheorem{remark}{Remark}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{remark}{Remark}[section]
+
+\newtheoremstyle{break}%
+	{}{}%
+	{}{}%
+	{\bfseries}{}% % Note that final punctuation is omitted.
+	{\newline}{}
+\newtheorem{examples}{Examples}[section]
 
 \begin{filecontents}{osborne_symmetries.bib}
 	@book{Serre,
@@ -220,13 +227,13 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 		title = {Quantum mechanics essentials: Everything you need for quantum computation},
 		url = {https://www.youtube.com/watch?v=28ABEInFxBQ},
 		year = {2023},
-		note = {Video lectures on YouTube.}
+		note = {Video lecture on YouTube.}
 	}
 
 	@misc{moretti_peter_weyl,
 		author = {Valter Moretti (\url{https://physics.stackexchange.com/users/35354/valter-moretti})},
 		howpublished = {Physics Stack Exchange (\url{https://physics.stackexchange.com})},
-		note = {(version: 2024-05-17 21:03:48Z)},
+		note = {Version: 2024-05-17 21:03:48Z},
 		title = {Answer to the question `Angular momentum Lie algebra for infinite-dimensional Hilbert spaces'},
 		url = {https://physics.stackexchange.com/a/814882/81224}
 	}
@@ -247,11 +254,11 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 \hypersetup{citecolor=red, pdfencoding=auto, psdextra, colorlinks=true, linkcolor=red, breaklinks=true, urlcolor=blue, pdftitle={Osborne's Lectures on Symmetries and Quantum Mechanics}, bookmarksopen=true, pdfauthor={Apoorv Potnis}, pdfsubject={Osborne's Lectures on Symmetries and Quantum Mechanics}, unicode=true, pdftoolbar=true, pdfmenubar=true, pdfstartview={FitH}, pdfkeywords={Tobias Osborne, Quantum Mechanics, Symmetries, Representation Theory, Linear Representations of Groups, Mathematical Physics, Lecture Notes}}
 \usepackage{cleveref, xurl}
 \usepackage[numbered]{bookmark}
-
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{enumitem}
 
 \usepackage{tikz}
 \usetikzlibrary{datavisualization, datavisualization.polar,datavisualization.formats.functions, fpu, calc, arrows.meta, bending, positioning, 3d, quotes, angles, decorations.pathmorphing, backgrounds, fit, babel, hobby, decorations.markings}
@@ -275,6 +282,7 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 \newcommand{\rr}{\mathbb{R}}
 \newcommand{\cc}{\mathbb{C}}
 \newcommand{\nn}{\mathbb{N}_0}
+\newcommand{\zz}{\mathbb{Z}}
 \newcommand{\dirac}{\mathup{\delta}}
 \renewcommand*{\hbar}{\mathrm{^^^^0127}}
 \renewcommand{\i}{\mathrm{i}}
@@ -292,7 +300,7 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 \newcommand{\ball}{\mathrm{B}}
 
 \title{Osborne's Lectures on Symmetries and Quantum Mechanics}
-	\author{}
+\author{}
 \date{\today}
 
 \begin{document}
@@ -329,14 +337,56 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 		\item The states of quantum mechanical systems are represented by density matrices.
 		\item The measurements or detectors are represented by positive operators.
 		\item B\"orn rule.
-		\item Schrodinger's equation.
+		\item Schr\"odinger's equation.
 		\item Tensor product for composite systems.
 	\end{enumerate}
 	We shall focus on the fifth postulate, namely the Schr\"odinger equation. We argue that we don't actually need it. It can be derived from deeper principles.
 
 	\section{Symmetries}
 
-	A symmetry on a quantum system is a physical operation that can be performed or can occur.
+	A \index{Symmetry!of a quantum system}symmetry on a quantum system is a physical operation that can be performed or can occur. The most general operation in quantum mechanics that can occur on a a system is represented by a completely positive map. Symmetries thus need to be completely positive maps as well. In fact, we shall argue that symmetries form a small subset of completely positive maps.
+	Take a system, and wait for some time \(t \in \rr\). It is possible for a system to not change in that time. Thus, `waiting for time \(t\)' is a symmetry. For every time \(t \in \rr\), there exists a possible symmetry operation, namely, waiting for time \(t\). Thus, we get a set of symmetries labelled by \(t\). What we are actually are interested in this course are sets of symmetries. We call the set of all labels as \(G\). There are some properties for symmetries which we desire, as follows.
+	\begin{enumerate}
+	    \item The symmetry of doing nothing must always be present in the set of symmetries.
+		\item If we have two symmetries, then we must be able to do them one after the other, and the resulting operation must be a symmetry as well.
+		\item If we have a symmetry operation, we must be able to `reverse' the operation to get the system back to its initial state.
+	\end{enumerate}
+	It should be noted that these symmetry operations are the in principle `possible' operations on a system, operations that we can think of at the very least. It may be extremely difficult, or impossible even, to actually perform these operations on a physical system.
+
+	In order to capture the three requirements that the set of symmetries must possess, we formalise the notion of an algebraic group, which the reader will have no doubt encountered before.
+	\begin{definition}[\index{Group}Group]
+	    A group is a set \(G\), together with a law of composition, i.e.\ a composition map
+		\begin{align*}
+		    \circ &\colon G \times G \rightarrow G,\\
+			\circ &\colon (x, y) \mapsto x \circ y,
+		\end{align*}
+		such that
+		\begin{enumerate}
+		    \item \((x\circ y) \circ z = x\circ (y \circ z)\), i.e.\ the product is associative,
+			\item \(G\) contains a unit element \(1\) such that \(x \circ 1 = 1 \circ x = x\), for all \(x \in G\), and,
+			\item For all \(x\in G\), there exists an inverse \(y \in G\) such that \(x \circ y = y \circ x = 1\).
+		\end{enumerate}
+	\end{definition}
+	\noindent We would often drop the \(\circ\) and denote \(x\circ y\) as simply \(xy\).
+	\begin{examples}
+		\leavevmode \vspace{-\baselineskip}\vspace{12pt}
+		\begin{enumerate}[label={(\alph*)},ref={\alph*}]
+			\item \(\zz / 2\zz\) is a group consisting of two elements; \(\{0, 1\}\) with addition operation \(\oplus\) defined as the usual addition modulo \(2\). It is the group of reflections, and physically captures the symmetry of charge conjugation, parity, etc.
+			The group multiplication table is as follows.
+			\begin{align*}
+				\setlength{\extrarowheight}{3pt}% local setting
+				\begin{array}{l|*{5}{l}}
+						& 0   & 1\\
+					\hline
+					0   & 0   & 1\\
+					1   & 1   & 0\\
+				\end{array}
+			\end{align*}
+			\item \(\zz\) is a group with the addition operation. Similarly, \(\zz \times \zz\) is a group too. This can represent the symmetries of a lattice of atoms.
+			\item \(\rr\) is a group with the addition operation. This captures the time and space translation symmetries.
+			\item Symmetries of the square, the dihedral group \(\mathrm{D}_4\), of order \(8\). The order of a finite group is the number of elements it contains. The group consists of rotations and flips of a square. This group is non-Abelian. A group is said to be Abelian if for all \(x, y \in G\), we have that \(xy = yx\).
+		\end{enumerate}
+	\end{examples}
 
 	\nocite{*}
 	\printbibliography[heading=bibintoc]
