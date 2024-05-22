@@ -7,24 +7,34 @@
 
 \usepackage[ngerman, italian, english]{babel}
 \PassOptionsToPackage{math-style=ISO, bold-style=ISO, sans-style=italic, nabla=upright, partial=upright, warnings-off={mathtools-colon,mathtools-overbracket}}{unicode-math}
-\usepackage{mathtools}
+\usepackage{mathtools, xparse}
+\usepackage{microtype}
 \usepackage{concmath-otf}
+\setmonofont[%
+ItalicFont=NewCMMono10-Italic.otf,%
+BoldFont=NewCMMono10-Bold.otf,%
+BoldItalicFont=NewCMMono10-BoldOblique.otf,%
+SlantedFont=NewCMMono10-Book.otf,%
+SlantedFeatures={FakeSlant=0.25},
+BoldSlantedFont=NewCMMono10-Bold.otf,%
+BoldSlantedFeatures={FakeSlant=0.25},
+SmallCapsFeatures={Numbers=OldStyle}]{NewCMMono10-Book.otf}
 
 \usepackage[style=british]{csquotes}
 
 \usepackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{definition}{Definition}[section]
-\newtheorem{example}{Example}[section]
-\newtheorem{remark}{Remark}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
 
 \newtheoremstyle{break}%
 {}{}%
 {}{}%
 {\bfseries}{}% % Note that final punctuation is omitted.
 {\newline}{}
-\newtheorem{examples}{Examples}[section]
+\newtheorem{examples}[theorem]{Examples}
 
 \begin{filecontents}{osborne_symmetries.bib}
 	@book{Serre,
@@ -90,7 +100,15 @@
 		note = {Video lecture on YouTube.}
 	}
 
-	@misc{moretti_peter_weyl,
+	@misc{Osborne_wigner,
+		author = {Osborne, Tobias},
+		title = {Advanced quantum theory, Lecture 18},
+		url = {https://www.youtube.com/watch?v=-Tb8B4_9a7g},
+		year = {2016},
+		note = {Video lecture on YouTube.}
+	}
+
+	@misc{Moretti_peter_weyl,
 		author = {Valter Moretti (\url{https://physics.stackexchange.com/users/35354/valter-moretti})},
 		howpublished = {Physics Stack Exchange (\url{https://physics.stackexchange.com})},
 		note = {Version: 2024-05-17 21:03:48Z},
@@ -111,7 +129,8 @@
 \makeindex[intoc]
 
 \usepackage{hyperref}
-\hypersetup{citecolor=red, pdfencoding=auto, psdextra, colorlinks=true, linkcolor=red, breaklinks=true, urlcolor=blue, pdftitle={Osborne's Lectures on Symmetries and Quantum Mechanics}, bookmarksopen=true, pdfauthor={Apoorv Potnis}, pdfsubject={Osborne's Lectures on Symmetries and Quantum Mechanics}, unicode=true, pdftoolbar=true, pdfmenubar=true, pdfstartview={FitH}, pdfkeywords={Tobias Osborne, Quantum Mechanics, Symmetries, Representation Theory, Linear Representations of Groups, Mathematical Physics, Lecture Notes}}
+\hypersetup{citecolor=red, pdfencoding=auto, psdextra, colorlinks=true, linkcolor=red, breaklinks=true, urlcolor=blue, pdftitle={Osborne's Lectures on Symmetries and Quantum Mechanics}, bookmarksopen=true, pdfauthor={Apoorv Potnis}, pdfsubject={Osborne's Lectures on Symmetries and Quantum Mechanics}, unicode=true, pdftoolbar=true, pdfmenubar=true, pdfkeywords={Tobias Osborne, Quantum Mechanics, Symmetries, Representation Theory, Linear Representations of Groups, Mathematical Physics, Lecture Notes}, pdfpagemode={FullScreen}, pdfpagelayout={TwoPageRight}, pdfstartview={FitH}}
+
 \usepackage{cleveref, xurl}
 \usepackage[numbered]{bookmark}
 \usepackage{booktabs}
@@ -141,6 +160,7 @@
 \newcommand{\rthree}{\mathbb{R}^3}
 \newcommand{\rr}{\mathbb{R}}
 \newcommand{\cc}{\mathbb{C}}
+\newcommand{\ii}{\mathbb{I}}
 \newcommand{\nn}{\mathbb{N}_0}
 \newcommand{\zz}{\mathbb{Z}}
 \newcommand{\dirac}{\mathup{\delta}}
@@ -158,6 +178,16 @@
 \newcommand{\atlas}{\mathcal{A}}
 \newcommand{\powerset}{\mathcal{P}}
 \newcommand{\ball}{\mathrm{B}}
+\DeclareMathOperator{\GL}{GL}
+\newcommand{\basis}{\mathcal{B}}
+\newcommand{\hilbert}{\mathcal{H}}
+\newcommand{\unitary}{\mathcal{U}}
+\newcommand{\ortho}{\mathrm{O}}
+\newcommand{\lorentz}{\ortho{(3;1)}}
+
+\DeclarePairedDelimiterX{\bra}[1]{\langle}{\rvert}{#1}
+\DeclarePairedDelimiterX{\ket}[1]{\lvert}{\rangle}{#1}
+\DeclarePairedDelimiterX\braket[2]{\langle}{\rangle}{#1\delimsize\vert\mathopen{}#2}
 
 \title{Osborne's Lectures on Symmetries and Quantum Mechanics}
 \author{}
@@ -167,12 +197,6 @@
 	\hypertarget{TitlePage}{}
 	\bookmark[dest=TitlePage]{Title Page}
 	\maketitle
-
-	\vspace{-2em}
-	\chapter*{\vspace{-2em}Note}
-	\hypertarget{Note}{}
-	\bookmark[dest=Note]{Note}
-	This document is best viewed in a full-screen mode with two pages side-by-side, on a screen of aspect ratio 16:9.
 
 	\chapter*{Preface}
 	\hypertarget{Preface}{}
@@ -193,7 +217,7 @@
 
 	We assume that the reader has a working knowledge of linear algebra and is familiar with basic ideas of quantum mechanics. Mainly, one needs the knowledge of the postulates of quantum mechanics, which can be learnt from Prof.\ Osborne's video lecture on YouTube titled `Quantum mechanics essentials: Everything you need for quantum computation'~\cite{Osborne_quantum_essentials}.
 
-	The main reference book this lecture course series is based on is the famous book of Serre.\begin{quote}\fullcite{Serre}.\end{quote}The first part of this book is based on lectures given by the eminent mathematician Jean-Pierre Serre to a group of quantum chemists. One may look at the first quantum field theory volume of Weinberg, but this is too advanced for present purposes and one would have great difficulties reading it.\begin{quote}\fullcite{Weinberg}.\end{quote}
+	The main reference book this lecture course series is based on is the following famous book of Serre.\begin{quote}\fullcite{Serre}.\end{quote}The first part of this book is based on lectures given by the eminent mathematician Jean-Pierre Serre to a group of quantum chemists. One may look at the first quantum field theory volume of Weinberg, but this is too advanced for present purposes and one would have great difficulties reading it.\begin{quote}\fullcite{Weinberg}.\end{quote}
 
 	\section{Postulates of quantum mechanics}
 
@@ -210,7 +234,7 @@
 
 	\section{Symmetries}
 
-	A \index{Symmetry!of a quantum system}symmetry on a quantum system is a physical operation that can be performed or can occur. The most general operation in quantum mechanics that can occur on a a system is represented by a completely positive map. Symmetries thus need to be completely positive maps as well. In fact, we shall argue that symmetries form a small subset of completely positive maps.
+	A \index{Symmetry!of a quantum system}symmetry on a quantum system is a physical operation that can be performed or can occur. The most general operation in quantum mechanics that can occur on a a system is represented by a completely positive map.\footnote{But then how are symmetries different from any general completely positive map?} Symmetries thus need to be completely positive maps as well. In fact, we shall argue that symmetries form a small subset of completely positive maps.
 	Take a system, and wait for some time \(t \in \rr\). It is possible for a system to not change in that time. Thus, `waiting for time \(t\)' is a symmetry. For every time \(t \in \rr\), there exists a possible symmetry operation, namely, waiting for time \(t\). Thus, we get a set of symmetries labelled by \(t\). What we are actually are interested in this course are sets of symmetries. We call the set of all labels as \(G\). There are some properties for symmetries which we desire, as follows.
 	\begin{enumerate}
 		\item The symmetry of doing nothing must always be present in the set of symmetries.
@@ -230,7 +254,7 @@
 		\begin{enumerate}
 			\item \((x\circ y) \circ z = x\circ (y \circ z)\), i.e.\ the product is associative,
 			\item \(G\) contains a unit element \(1\) such that \(x \circ 1 = 1 \circ x = x\), for all \(x \in G\), and,
-			\item For all \(x\in G\), there exists an inverse \(y \in G\) such that \(x \circ y = y \circ x = 1\).
+			\item for all \(x\in G\), there exists an inverse \(y \in G\) such that \(x \circ y = y \circ x = 1\).
 		\end{enumerate}
 	\end{definition}
 	\noindent We would often drop the \(\circ\) and denote \(x\circ y\) as simply \(xy\).
@@ -250,11 +274,49 @@
 			\end{align*}
 			\item \(\zz\) is a group with the addition operation. Similarly, \(\zz \times \zz\) is a group too. This can represent the symmetries of a lattice of atoms.
 			\item \(\rr\) is a group with the addition operation. This captures the time and space translation symmetries.
-			\item Symmetries of the square, the dihedral group \(\mathrm{D}_4\), of order \(8\). The order of a finite group is the number of elements it contains. The group consists of rotations and flips of a square. This group is non-Abelian. A group is said to be Abelian if for all \(x, y \in G\), we have that \(xy = yx\).
+			\item The symmetries of the square, the dihedral group \(\mathrm{D}_4\), of order \(8\), forms a group as well. The order of a finite group is the number of elements it contains. The group consists of rotations and flips of a square. This group is non-Abelian. A group is said to be Abelian if for all \(x, y \in G\), we have that \(xy = yx\).
+			\item Let \(V\) be a finite-dimensional complex vector space. We denote by \(\GL(V)\) the group of isomorphisms of \(V\) with itself, i.e.\ the group of all invertible linear maps \(a \colon V \rightarrow V\). Such maps may be identified with matrices, with order \(n \times n\), when \(\dim (V) = n < \infty\). Let \(\basis = \{\ket{e_i} \mid j = 1, \ldots, n\}\) be a basis. Then we have that
+			\begin{align*}
+				a\ket{e_j} = \sum_{k=1}^n a_{kj}\ket{e_k}.
+			\end{align*}
+			\item Let \(\hilbert\) be a Hilbert space. Then the set \(\unitary(\hilbert)\) of unitary operators acting on \(\hilbert\) is a group. It is an extremely important group in quantum mechanics as it effectively forms the set of symmetries of a quantum system.\footnote{But Prof.\ Osborne then immediately remarks that there exist symmetries which are not unitaries. I don't understand how this is not a contradiction.}
 		\end{enumerate}
 	\end{examples}
+
+	All the known symmetries in physics are captured by groups, thus \textbf{symmetries of physical systems will be labelled by groups.} It should be noted that there are some speculations that one might need some different structure such as a fusion category, but this is advanced stuff that we won't discuss in this course. It is not yet clear whether fusion categories have physical relevance.
+
+	We already have an intuitive idea of what it means for two groups `to be basically the same'. We now formalise that.
+	\begin{definition}[\index{Group!homomorphism}Group homomorphism]
+		Let \(G\) and \(H\) be two groups. A group homomorphism of \(G\) into \(H\) is a map \(f \colon G \rightarrow H\) such that \(f(gh) = f(g) f(h)\), for all \(g, h \in G\), and \(f(1_G) = 1_H\).
+	\end{definition}
+
+	\begin{example}
+		Let \(f \colon \zz/2\zz \rightarrow \{\ii, c\}\) by \(f(0) = \ii\) and \(f(1) = c\), where \(c\) denotes charge conjugation. Then \(f\) is a group homomorphism.
+	\end{example}
+
+	We now contrast the notion of a symmetry with something known as a \textit{symmetry transformation}.
+	\begin{definition}[\index{Symmetry!transformation}Symmetry transformation]
+		A symmetry transformation \(T \colon \hilbert \rightarrow \hilbert\) is an invertible transformation of rays in a Hilbert space \(\hilbert\) which preserves the transition probabilities, i.e.\ for all \(\ket{\psi} \in [\ket{\psi}]\) and \(\ket{\phi} \in [\ket{\phi}]\), with \(\ket{\psi'} \in [\ket{\psi}]\) and \(\ket{\phi'} \in [\ket{\phi}]\),
+		\begin{align*}
+			{\abs{\braket{\psi'}{\phi'}}}^2 = {\abs{\braket{\psi}{\phi}}}^2.
+		\end{align*}
+	\end{definition}
+	Note that we haven't specified that \(T\) be linear. A famous theorem of Wigner forces the symmetry transformations to be linear.
+
+	\section{Linear representations}
+
+	\begin{definition}[\index{Representation!Linear}\index{Representation!Unitary}Linear and unitary representations]
+		Suppose \(G\) is a finite group with the identity \(1\), and let \(V\) be a complex vector space. A linear representation of \(G\) in \(V\) is a group homomorphism \(\rho\) from \(G\) into \(\GL(V)\), i.e.\ \(\rho(1) = \ii_n\) and \(\rho(st) = \rho(s) \rho(t)\) for all \(s, t \in G\). A linear representation is said to be unitary if \(\rho(G) \subset \unitary(\hilbert)\).
+	\end{definition}
+	\begin{theorem}[Wigner]
+		Any symmetry transformation \(T\) has a representation on \(\hilbert\) as an operator which is either unitary or anti-unitary.\footnote{An anti-unitary transformation \(U\) is a transformation for which \(U(a\ket{\psi}) = a^* U\ket{\psi}\).}
+	\end{theorem}
+	The proof of Wigner's theorem is not discussed in this course. Prof.\ Osborne discusses the proof in the eighteenth lecture of his `Advanced Quantum Mechanics' course, available on YouTube~\cite{Osborne_wigner}.
+
+	We now discuss an important non-example. Let \(\hilbert = \cc^4\) and \(G = \lorentz\) be the group of Lorentz transformations. There does not exist a \(\rho \colon \lorentz \rightarrow \unitary(\cc^4)\) that is non-trivial. In fact, there is no non-trivial unitary representation of the Lorentz group on any finite-dimensional Hilbert space. Thus, when one tries to combine special relativity and quantum mechanics, one is inevitably drawn to infinite-dimensional Hilbert spaces.
 
 	\nocite{*}
 	\printbibliography[heading=bibintoc]
 	\printindex
 \end{document}
+
