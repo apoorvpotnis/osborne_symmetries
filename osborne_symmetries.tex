@@ -313,14 +313,17 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 \newcommand{\unitary}{\mathcal{U}}
 \newcommand{\ortho}{\mathrm{O}}
 \newcommand{\lorentz}{\ortho{(3;1)}}
+\newcommand{\man}{\mathcal{M}}
+\newcommand{\euc}{\mathrm{E}}
+\DeclareMathOperator{\isom}{Isom}
 
 \DeclarePairedDelimiterX{\bra}[1]{\langle}{\rvert}{#1}
 \DeclarePairedDelimiterX{\ket}[1]{\lvert}{\rangle}{#1}
 \DeclarePairedDelimiterX\braket[2]{\langle}{\rangle}{#1\delimsize\vert\mathopen{}#2}
 
-\title{Osborne's Lectures on Symmetries and Quantum Mechanics}
+\title{\textsf{\textbf{Osborne's Lectures on Symmetries and Quantum Mechanics}}}
 \author{}
-\date{\today}
+\date{\textsf{\today}}
 
 \begin{document}
 	\hypertarget{TitlePage}{}
@@ -346,7 +349,7 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 
 	We assume that the reader has a working knowledge of linear algebra and is familiar with basic ideas of quantum mechanics. Mainly, one needs the knowledge of the postulates of quantum mechanics, which can be learnt from Prof.\ Osborne's video lecture on YouTube titled `Quantum mechanics essentials: Everything you need for quantum computation'~\cite{Osborne_quantum_essentials}.
 
-	The main reference book this lecture course series is based on is the following famous book of Serre.\begin{quote}\fullcite{Serre}.\end{quote}The first part of this book is based on lectures given by the eminent mathematician Jean-Pierre Serre to a group of quantum chemists. One may look at the first quantum field theory volume of Weinberg, but this is too advanced for present purposes and one would have great difficulties reading it.\begin{quote}\fullcite{Weinberg}.\end{quote}
+	The main reference book this lecture course series is based on is the following famous book of Serre.\begin{quote}\fullcite{Serre}.\end{quote}The first part of this book is based on lectures given by the eminent mathematician Jean-Pierre Serre to a group of quantum chemists. One may look at the first quantum field theory volume of Weinberg, but it is too advanced for our present purposes and one would have great difficulties reading it.\begin{quote}\fullcite{Weinberg}.\end{quote}
 
 	\section{Postulates of quantum mechanics}
 
@@ -359,7 +362,7 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 		\item Schr\"odinger's equation.
 		\item Tensor product for composite systems.
 	\end{enumerate}
-	We shall focus on the fifth postulate, namely the Schr\"odinger equation. We argue that we don't actually need it. It can be derived from deeper principles.
+	We shall focus on the fifth postulate, namely the Schr\"odinger equation. We argue that we don't actually need it and it can be extracted from the other postulates.
 
 	\section{Symmetries}
 
@@ -370,7 +373,7 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 		\item If we have two symmetries, then we must be able to do them one after the other, and the resulting operation must be a symmetry as well.
 		\item If we have a symmetry operation, we must be able to `reverse' the operation to get the system back to its initial state.
 	\end{enumerate}
-	It should be noted that these symmetry operations are the in principle `possible' operations on a system, operations that we can think of at the very least. It may be extremely difficult, or impossible even, to actually perform these operations on a physical system.
+	It should be noted that these symmetry operations are the in principle the `possible' operations on a system, operations that we can think of, at the very least. It may be extremely difficult, or impossible even, to actually perform these operations on a physical system.
 
 	In order to capture the three requirements that the set of symmetries must possess, we formalise the notion of an algebraic group, which the reader will have no doubt encountered before.
 	\begin{definition}[\index{Group}Group]
@@ -430,19 +433,32 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 			{\abs{\braket{\psi'}{\phi'}}}^2 = {\abs{\braket{\psi}{\phi}}}^2.
 		\end{align*}
 	\end{definition}
-	Note that we haven't specified that \(T\) be linear. A famous theorem of Wigner forces the symmetry transformations to be linear.
+	\noindent Note that we haven't explicitly demanded that \(T\) be linear, however the famous Wigner's theorem forces the symmetry transformations to be linear.
 
 	\section{Linear representations}
 
 	\begin{definition}[\index{Representation!Linear}\index{Representation!Unitary}Linear and unitary representations]
-		Suppose \(G\) is a finite group with the identity \(1\), and let \(V\) be a complex vector space. A linear representation of \(G\) in \(V\) is a group homomorphism \(\rho\) from \(G\) into \(\GL(V)\), i.e.\ \(\rho(1) = \ii_n\) and \(\rho(st) = \rho(s) \rho(t)\) for all \(s, t \in G\). A linear representation is said to be unitary if \(\rho(G) \subset \unitary(\hilbert)\).
+		Suppose \(G\) is a finite group with the identity \(1\), and let \(V\) be a complex vector space. A linear representation of \(G\) in \(V\) is a group homomorphism \(\rho\) from \(G\) into \(\GL(V)\), i.e.\ \(\rho(1) = \ii_n\) and \(\rho(st) = \rho(s) \rho(t)\) for all \(s, t \in G\). A linear representation is said to be unitary if \(\rho(G) \subset \unitary(\hilbert) \subset \GL(V)\).
 	\end{definition}
 	\begin{theorem}[Wigner]
-		Any symmetry transformation \(T\) has a representation on \(\hilbert\) as an operator which is either unitary or anti-unitary.\footnote{An anti-unitary transformation \(U\) is a transformation for which \(U(a\ket{\psi}) = a^* U\ket{\psi}\).}
+		Any symmetry transformation \(T\) has a representation on \(\hilbert\) as an operator which is either unitary or anti-unitary.\footnote{An anti-unitary transformation \(U\) is a transformation for which \(U(a\ket{\psi}) = a^*(U\ket{\psi})\).}
 	\end{theorem}
 	The proof of Wigner's theorem is not discussed in this course. Prof.\ Osborne discusses the proof in the eighteenth lecture of his `Advanced Quantum Mechanics' course, available on YouTube~\cite{Osborne_wigner}.
 
 	We now discuss an important non-example. Let \(\hilbert = \cc^4\) and \(G = \lorentz\) be the group of Lorentz transformations. There does not exist a \(\rho \colon \lorentz \rightarrow \unitary(\cc^4)\) that is non-trivial. In fact, there is no non-trivial unitary representation of the Lorentz group on any finite-dimensional Hilbert space. Thus, when one tries to combine special relativity and quantum mechanics, one is inevitably drawn to infinite-dimensional Hilbert spaces.
+
+	\chapter{Linear representations}
+
+	\section{Goals for the course}
+
+	For the remaining part of the course, we shall try to construct `minimal' quantum mechanical systems which posses the particular symmetry we are interested in. Once we have that, we can build other, more complicated systems from them. Finally, we can attempt to classify the systems according to their symmetry groups. A long term goal in theoretical physics is to find out that given a space-time metric manifold \(\man\), what quantum systems `correspond to' \(\man\). This is a very hard question which is researched still today. By `correspond to' we mean that for every `achievable' operation on \(\man\), there is a corresponding quantum mechanical operation implementing that operation. It turns out that the correct choice for `achievable' operations permitted on the manifold are the ones which preserve distances on the manifold. Thus, these operations form the isometry group of \(\man\), \(\isom(\man)\).
+
+	\begin{examples}
+		\begin{enumerate}
+		\leavevmode \vspace{-\baselineskip}\vspace{12pt}
+		    \item Let \(\man = \rr^3\). Then \(\isom(\rr^3) = \euc(3)\), the Euclidean group consisting of all the translations, rotations and reflections of \(\rr^3\). One can identify \(\rr^3\) with \(\euc(3)\): if we have a single point and apply all the operations available to us from \(\euc(3)\), we get the entire space.
+		\end{enumerate}
+	\end{examples}
 
 	\nocite{*}
 	\printbibliography[heading=bibintoc]
