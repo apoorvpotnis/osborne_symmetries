@@ -292,6 +292,8 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 \newcommand{\ii}{\mathbb{I}}
 \newcommand{\nn}{\mathbb{N}_0}
 \newcommand{\zz}{\mathbb{Z}}
+\renewcommand{\ss}{\mathbb{S}}
+\newcommand{\mm}{\mathbb{M}}
 \newcommand{\dirac}{\mathup{\delta}}
 \renewcommand*{\hbar}{\mathrm{^^^^0127}}
 \renewcommand{\i}{\mathrm{i}}
@@ -312,10 +314,12 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 \newcommand{\hilbert}{\mathcal{H}}
 \newcommand{\unitary}{\mathcal{U}}
 \newcommand{\ortho}{\mathrm{O}}
-\newcommand{\lorentz}{\ortho{(3;1)}}
+\newcommand{\lorentz}{\ortho{(3,1)}}
 \newcommand{\man}{\mathcal{M}}
 \newcommand{\euc}{\mathrm{E}}
 \DeclareMathOperator{\isom}{Isom}
+\newcommand{\mink}{\mm_{3,1}}
+\newcommand{\poin}{\mathrm{IO}(3,1)}
 
 \DeclarePairedDelimiterX{\bra}[1]{\langle}{\rvert}{#1}
 \DeclarePairedDelimiterX{\ket}[1]{\lvert}{\rangle}{#1}
@@ -451,12 +455,13 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 
 	\section{Goals for the course}
 
-	For the remaining part of the course, we shall try to construct `minimal' quantum mechanical systems which posses the particular symmetry we are interested in. Once we have that, we can build other, more complicated systems from them. Finally, we can attempt to classify the systems according to their symmetry groups. A long term goal in theoretical physics is to find out that given a space-time metric manifold \(\man\), what quantum systems `correspond to' \(\man\). This is a very hard question which is researched still today. By `correspond to' we mean that for every `achievable' operation on \(\man\), there is a corresponding quantum mechanical operation implementing that operation. It turns out that the correct choice for `achievable' operations permitted on the manifold are the ones which preserve distances on the manifold. Thus, these operations form the isometry group of \(\man\), \(\isom(\man)\).
-
+	For the remaining part of the course, we shall try to construct `minimal' quantum mechanical systems which posses the particular symmetry we are interested in. Once we have that, we can build other, more complicated systems from them. Finally, we can attempt to classify the systems according to their symmetry groups. A long term goal in theoretical physics is to find out that given a space-time metric manifold \(\man\), what quantum systems `correspond to' \(\man\)? This is a very hard question which is researched still today. By `correspond to' we mean that for every `achievable' operation on \(\man\), there is a corresponding quantum mechanical operation implementing that operation. It turns out that the correct choice for `achievable' operations permitted on the manifold are the ones which preserve distances on the manifold. Thus, these operations form the isometry group of \(\man\), \(\isom(\man)\).
 	\begin{examples}
-		\begin{enumerate}
 		\leavevmode \vspace{-\baselineskip}\vspace{12pt}
+		\begin{enumerate}
 		    \item Let \(\man = \rr^3\). Then \(\isom(\rr^3) = \euc(3)\), the Euclidean group consisting of all the translations, rotations and reflections of \(\rr^3\). One can identify \(\rr^3\) with \(\euc(3)\): if we have a single point and apply all the operations available to us from \(\euc(3)\), we get the entire space.
+			\item Let us take \(\man\) to be the Minkowski space \(\mink\), which we identify with \(\rr^{3+1}\), in standard co-ordinates. Recall that the metric on \(\mink\) is given by the space-time interval. The isometries of \(\mink\) form the Poincaré group \(\poin\).
+			\item If we take \(\ss^2\) to be the manifold, with distances given by great circles, we have \(\ortho(3)\) as the isometries.
 		\end{enumerate}
 	\end{examples}
 
