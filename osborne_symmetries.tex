@@ -148,6 +148,10 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 \renewcommand*{\mitsansvarepsilon}{\char"E072}
 \setmathfont[range={\mathfrak,\mathbffrak}]{NewCMMath-Regular.otf}
 \DeclareMathAlphabet\cmmathcal{OMS}{cmsy}{m}{n}
+\DeclareFontFamily{U}{mathc}{}
+\DeclareFontShape{U}{mathc}{m}{it}%
+{<->s*[1.03] mathc10}{}
+\DeclareMathAlphabet{\cmmathcal}{U}{mathc}{m}{it}
 \renewcommand{\mathcal}{\cmmathcal}
 
 \usepackage[style=british]{csquotes}
@@ -244,6 +248,14 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 		note = {Version: 2024-05-17 21:03:48Z},
 		title = {Answer to the question `Angular momentum Lie algebra for infinite-dimensional Hilbert spaces'},
 		url = {https://physics.stackexchange.com/a/814882/81224}
+	}
+
+	@misc{Moretti_symmetry_definition,
+		author = {Valter Moretti (\url{https://physics.stackexchange.com/users/35354/valter-moretti})},
+		howpublished = {Physics Stack Exchange (\url{https://physics.stackexchange.com})},
+		note = {Version: 2017-10-01 08:00:54Z},
+		title = {Answer to the question `Angular momentum Lie algebra for infinite-dimensional Hilbert spaces'},
+		url = {https://physics.stackexchange.com/a/360131/81224}
 	}
 
 \end{filecontents}
@@ -386,11 +398,11 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 		    \circ &\colon G \times G \rightarrow G,\\
 			\circ &\colon (x, y) \mapsto x \circ y,
 		\end{align*}
-		such that
+		such that the following conditions are satisfied.
 		\begin{enumerate}
-		    \item \((x\circ y) \circ z = x\circ (y \circ z)\), i.e.\ the product is associative,
-			\item \(G\) contains a unit element \(1\) such that \(x \circ 1 = 1 \circ x = x\), for all \(x \in G\), and,
-			\item for all \(x\in G\), there exists an inverse \(y \in G\) such that \(x \circ y = y \circ x = 1\).
+		    \item \((x\circ y) \circ z = x\circ (y \circ z)\) for all \(x, y, z \in G\), i.e.\ the product is associative.
+			\item \(G\) contains a unit element \(1\) such that \(x \circ 1 = 1 \circ x = x\), for all \(x \in G\).
+			\item For all \(x\in G\), there exists an inverse \(y \in G\) such that \(x \circ y = y \circ x = 1\).
 		\end{enumerate}
 	\end{definition}
 	\noindent We would often drop the \(\circ\) and denote \(x\circ y\) as simply \(xy\).
@@ -399,7 +411,7 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 		\begin{enumerate}[label={(\alph*)},ref={\alph*}]
 			\item \(\zz / 2\zz\) is a group consisting of two elements; \(\{0, 1\}\) with addition operation \(\oplus\) defined as the usual addition modulo \(2\). It is the group of reflections, and physically captures the symmetry of charge conjugation, parity, etc.
 			The group multiplication table is as follows.
-			\begin{align*}
+			\begin{equation*}
 				\setlength{\extrarowheight}{3pt}% local setting
 				\begin{array}{l|*{5}{l}}
 						& 0   & 1\\
@@ -407,14 +419,14 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 					0   & 0   & 1\\
 					1   & 1   & 0\\
 				\end{array}
-			\end{align*}
+			\end{equation*}
 			\item \(\zz\) is a group with the addition operation. Similarly, \(\zz \times \zz\) is a group too. This can represent the symmetries of a lattice of atoms.
 			\item \(\rr\) is a group with the addition operation. This captures the time and space translation symmetries.
 			\item The symmetries of the square, the dihedral group \(\mathrm{D}_4\), of order \(8\), forms a group as well. The order of a finite group is the number of elements it contains. The group consists of rotations and flips of a square. This group is non-Abelian. A group is said to be Abelian if for all \(x, y \in G\), we have that \(xy = yx\).
 			\item Let \(V\) be a finite-dimensional complex vector space. We denote by \(\GL(V)\) the group of isomorphisms of \(V\) with itself, i.e.\ the group of all invertible linear maps \(a \colon V \rightarrow V\). Such maps may be identified with matrices, with order \(n \times n\), when \(\dim (V) = n < \infty\). Let \(\basis = \{\ket{e_i} \mid j = 1, \ldots, n\}\) be a basis. Then we have that
-			\begin{align*}
+			\begin{equation*}
 				a\ket{e_j} = \sum_{k=1}^n a_{kj}\ket{e_k}.
-			\end{align*}
+			\end{equation*}
 			\item Let \(\hilbert\) be a Hilbert space. Then the set \(\unitary(\hilbert)\) of unitary operators acting on \(\hilbert\) is a group. It is an extremely important group in quantum mechanics as it effectively forms the set of symmetries of a quantum system.\footnote{But Prof.\ Osborne then immediately remarks that there exist symmetries which are not unitaries. I don't understand how this is not a contradiction.}
 		\end{enumerate}
 	\end{examples}
@@ -423,8 +435,17 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 
 	We already have an intuitive idea of what it means for two groups `to be basically the same'. We now formalise that.
 	\begin{definition}[\index{Group!homomorphism}Group homomorphism]
-	    Let \(G\) and \(H\) be two groups. A group homomorphism of \(G\) into \(H\) is a map \(f \colon G \rightarrow H\) such that \(f(gh) = f(g) f(h)\), for all \(g, h \in G\), and \(f(1_G) = 1_H\).
+	    Let \(G\) and \(H\) be two groups. A group homomorphism of \(G\) into \(H\) is a map
+		\begin{equation*}
+			f \colon G \rightarrow H
+		\end{equation*}
+		such that
+		\begin{equation*}
+			f(g_1 g_2) = f(g_1) f(g_2),
+		\end{equation*}
+		for all \(g_1, g_2 \in G\), and \(f(1_G) = 1_H\).
 	\end{definition}
+	\noindent Thus, a group homomorphism preserves the group structure of \(G\).
 
 	\begin{example}
 		Let \(f \colon \zz/2\zz \rightarrow \{\ii, c\}\) by \(f(0) = \ii\) and \(f(1) = c\), where \(c\) denotes charge conjugation. Then \(f\) is a group homomorphism.
@@ -432,19 +453,24 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 
 	We now contrast the notion of a symmetry with something known as a \textit{symmetry transformation}.
 	\begin{definition}[\index{Symmetry!transformation}Symmetry transformation]
-		A symmetry transformation \(T \colon \hilbert \rightarrow \hilbert\) is an invertible transformation of rays in a Hilbert space \(\hilbert\) which preserves the transition probabilities, i.e.\ for all \(\ket{\psi} \in [\ket{\psi}]\) and \(\ket{\phi} \in [\ket{\phi}]\), with \(\ket{\psi'} \in [\ket{\psi}]\) and \(\ket{\phi'} \in [\ket{\phi}]\),
-		\begin{align*}
+		A symmetry transformation \(T \colon \hilbert \rightarrow \hilbert\) is an invertible transformation of rays in a Hilbert space \(\hilbert\) which preserves the transition probabilities, i.e.\ for all \(\ket{\psi} \in [\ket{\psi}]\)\footnote{\([\ket{\psi}]\) denotes the ray space of \(\ket{\psi}\), i.e.\ \([\ket{\psi}] \coloneq \{\e^{\i\theta}\ket{\psi} \mid \theta\in\rr\}\).} and \(\ket{\phi} \in [\ket{\phi}]\), with \(\ket{\psi'} \in [\ket{\psi}]\) and \(\ket{\phi'} \in [\ket{\phi}]\),
+		\begin{equation*}
 			{\abs{\braket{\psi'}{\phi'}}}^2 = {\abs{\braket{\psi}{\phi}}}^2.
-		\end{align*}
+		\end{equation*}
 	\end{definition}
-	\noindent Note that we haven't explicitly demanded that \(T\) be linear, however the famous Wigner's theorem forces the symmetry transformations to be linear.
+	\noindent Note that we haven't explicitly demanded that \(T\) be linear, however the famous Wigner's theorem forces the symmetry transformations to be linear, as we shortly discuss. It seems that what we call symmetry transformations are sometimes referred to as \index{Symmetry!Wigner}\textit{Wigner symmetries} in the literature. There exist other notions of symmetries, such as \index{Symmetry!Kadison}\textit{Kadison symmetries}, \index{Symmetry!Kadison symmetry in dual transformation}\textit{Kadison symmetries in dual formulation} and \index{Symmetry!Segal}\textit{Segal symmetries}~\cite{Moretti_symmetry_definition}\cite[chp.~12]{Moretti}.
 
 	\section{Linear representations}
 
-	\begin{definition}[\index{Representation!Linear}\index{Representation!Unitary}Linear and unitary representations]
-		Suppose \(G\) is a finite group with the identity \(1\), and let \(V\) be a complex vector space. A linear representation of \(G\) in \(V\) is a group homomorphism \(\rho\) from \(G\) into \(\GL(V)\), i.e.\ \(\rho(1) = \ii_n\) and \(\rho(st) = \rho(s) \rho(t)\) for all \(s, t \in G\). A linear representation is said to be unitary if \(\rho(G) \subset \unitary(\hilbert) \subset \GL(V)\).
+	\begin{definition}[\index{Representation!linear}\index{Representation!unitary}Linear and unitary representations]
+		Suppose \(G\) is a finite group with the identity \(1\), and let \(V\) be a complex vector space. A linear representation of \(G\) in \(V\) is a group homomorphism
+		\begin{equation*}
+		    \rho \colon G \rightarrow \GL(V).
+		\end{equation*}
+		A linear representation is said to be unitary if \(\rho(G) \subset \unitary(\hilbert) \subset \GL(V)\).
 	\end{definition}
-	\begin{theorem}[Wigner]
+	\noindent Since \(\rho\) is a group homomorphism, we have that \(\rho(1) = \ii_n\) and \(\rho(st) = \rho(s) \rho(t)\) for all \(s, t \in G\). We would often denote \(\rho(s)\) by \(\rho_s\). By abuse of notation/terminology, we would often refer to a linear or unitary representation \(\rho\) of \(G\) in \(V\) simply as `the representation \(V\)\,'.
+	\begin{theorem}[\index{Wigner's theorem}Wigner]
 		Any symmetry transformation \(T\) has a representation on \(\hilbert\) as an operator which is either unitary or anti-unitary.\footnote{An anti-unitary transformation \(U\) is a transformation for which \(U(a\ket{\psi}) = a^*(U\ket{\psi})\).}
 	\end{theorem}
 	The proof of Wigner's theorem is not discussed in this course. Prof.\ Osborne discusses the proof in the eighteenth lecture of his `Advanced Quantum Mechanics' course, available on YouTube~\cite{Osborne_wigner}.
@@ -455,13 +481,16 @@ BoldSlantedFont=NewCMSans10-BoldOblique.otf,%
 
 	\section{Goals for the course}
 
-	For the remaining part of the course, we shall try to construct `minimal' quantum mechanical systems which posses the particular symmetry we are interested in. Once we have that, we can build other, more complicated systems from them. Finally, we can attempt to classify the systems according to their symmetry groups. A long term goal in theoretical physics is to find out that given a space-time metric manifold \(\man\), what quantum systems `correspond to' \(\man\)? This is a very hard question which is researched still today. By `correspond to' we mean that for every `achievable' operation on \(\man\), there is a corresponding quantum mechanical operation implementing that operation. It turns out that the correct choice for `achievable' operations permitted on the manifold are the ones which preserve distances on the manifold. Thus, these operations form the isometry group of \(\man\), \(\isom(\man)\).
+	For the remaining part of the course, we shall try to construct `minimal' quantum mechanical systems which posses the particular symmetry we are interested in. Once we have that, we can build other, more complicated systems from them. Finally, we can attempt to classify the systems according to their symmetry groups.
+
+	A long term goal in theoretical physics is to find out that given a space-time metric manifold \(\man\), what quantum systems `correspond to' \(\man\)? This is a very hard question which is researched still today. By `correspond to' we mean that for every `achievable' operation on \(\man\), there is a corresponding quantum mechanical operation implementing that operation. It turns out that the correct choice for `achievable' operations permitted on the manifold are the ones which preserve distances on the manifold. Thus, these operations form the isometry group of \(\man\), \(\isom(\man)\).
 	\begin{examples}
 		\leavevmode \vspace{-\baselineskip}\vspace{12pt}
 		\begin{enumerate}
 		    \item Let \(\man = \rr^3\). Then \(\isom(\rr^3) = \euc(3)\), the Euclidean group consisting of all the translations, rotations and reflections of \(\rr^3\). One can identify \(\rr^3\) with \(\euc(3)\): if we have a single point and apply all the operations available to us from \(\euc(3)\), we get the entire space.
 			\item Let us take \(\man\) to be the Minkowski space \(\mink\), which we identify with \(\rr^{3+1}\), in standard co-ordinates. Recall that the metric on \(\mink\) is given by the space-time interval. The isometries of \(\mink\) form the Poincaré group \(\poin\).
 			\item If we take \(\ss^2\) to be the manifold, with distances given by great circles, we have \(\ortho(3)\) as the isometries.
+			\item Taking the triangle as our manifold gives us the dihedral group \(\mathrm{D}_3\) as the isometry group.
 		\end{enumerate}
 	\end{examples}
 
